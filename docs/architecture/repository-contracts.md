@@ -115,7 +115,7 @@ GitHub 계정명은 아직 받지 않았으므로 CODEOWNERS와 실제 권한 �
 
 companyId는 AI 데이터 영역에서 발급하고, 백엔드의 종목 매핑은 AI의 기업 식별 정보를 검증한 뒤 저장하는 안을 제안한다. instrumentId는 백엔드가 발급한다. 공시 정정은 문서 버전으로 구분하며 기존 답변의 근거를 새 버전으로 조용히 바꾸지 않는다.
 
-종목·기업 연결과 답변 출처의 서비스 간 ID는 서비스 독립성을 위해 DB 간 FK를 사용하지 않고 계약과 동기화 검증으로 관리한다. MySQL의 두 DB에 각각 전용 계정·마이그레이션 책임을 둔다. 기존 ERD를 수정해 ID 발급 책임, 누락 처리, 삭제·보존 규칙을 명시한 후 구현한다.
+종목·기업 연결과 답변 출처의 서비스 간 ID는 서비스 독립성을 위해 DB 간 FK를 사용하지 않고 계약과 동기화 검증으로 관리한다. PostgreSQL의 두 DB에 각각 전용 계정·마이그레이션 책임을 둔다. 기존 ERD를 수정해 ID 발급 책임, 누락 처리, 삭제·보존 규칙을 명시한 후 구현한다.
 
 ## 7. 호출 제한시간·재시도·추적
 
@@ -204,7 +204,7 @@ scope는 선택이며 auth, trading, market, research, rag, ingestion, infra, do
 ```text
 feat(auth): JWT 로그인 API 추가
 fix(trading): 동시 주문의 예약금 초과 방지
-docs(architecture): MySQL 데이터 소유권 명시
+docs(architecture): PostgreSQL 데이터 소유권 명시
 ci(backend): Gradle 빌드 검사 추가
 ```
 
@@ -259,6 +259,6 @@ main의 PR 필수·필수 CI·최신 main 기준 검사·대화 해결·force pu
 
 ## 11. 현재 기술 결정 반영
 
-backend는 Java 21 LTS(Eclipse Temurin) + Spring Boot 4.1.1 + Gradle을 사용한다. Java 주 버전과 Spring Boot 버전은 확정이며 개발·CI·컨테이너에 동일하게 적용한다. Gradle Wrapper는 공식 Initializr가 제공한 9.7.1로 고정한다. JDK 패치 버전은 보안 업데이트에 따라 관리한다. RDB는 MySQL을 사용하고 8.4 LTS를 추천한다. AI는 Python 3.12 + FastAPI + uv를 추천하며 상세 라이브러리는 시스템 아키텍처 1.3절을 따른다.
+backend는 Java 21 LTS(Eclipse Temurin) + Spring Boot 4.1.1 + Gradle을 사용한다. Java 주 버전과 Spring Boot 버전은 확정이며 개발·CI·컨테이너에 동일하게 적용한다. Gradle Wrapper는 공식 Initializr가 제공한 9.7.1로 고정한다. JDK 패치 버전은 보안 업데이트에 따라 관리한다. RDB는 PostgreSQL 16을 사용한다. AI는 Python 3.12 + FastAPI + uv를 추천하며 상세 라이브러리는 시스템 아키텍처 1.3절을 따른다.
 
 프론트 기술·배포는 미정이며 백엔드 먼저 구현한다. web의 TypeScript 클라이언트·Node CI·독립 배포는 아직 확정하지 않는다. 별도 프론트 선택 시 기존 3레포 규약을 적용한다. Thymeleaf 선택 시 화면을 백엔드 templates/static에 포함하고 web 레포와 3앱 릴리스 조합은 재검토한다. 백엔드 로그인 JWT 선택은 유지한다. Thymeleaf 선택 시 브라우저의 JWT 전달·보관 방식과 서버 렌더링·CSRF 처리를 별도로 설계한다. 백엔드 API와 AI의 내부 계약은 화면 방식과 관계없이 유지한다.

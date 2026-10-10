@@ -10,7 +10,7 @@
 - 코어 백엔드: Java 21 LTS(Eclipse Temurin) + Spring Boot 4.1.1 + Gradle 채택. Spring Security를 같은 애플리케이션에 포함하고 로그인 인증은 JWT를 사용한다.
 - AI: Python 3.12 + FastAPI + Pydantic + uv를 추천하는 별도 내부 서비스. 상세 구성은 1.3절을 따른다.
 - 프론트엔드: 기술·실행·배포 방식 미정. 백엔드 먼저 구현하고 React 등 별도 앱 또는 Thymeleaf 서버 렌더링을 이후 결정한다. 프론트 빌드 도구·CI는 아직 고정하지 않는다.
-- RDB: MySQL 사용 방향. MySQL 8.4 LTS + InnoDB를 추천한다. 거래 DB와 기업분석 DB는 권한과 마이그레이션 책임을 분리한다.
+- RDB: PostgreSQL 16 사용 확정. 거래 DB와 기업분석 DB는 권한과 마이그레이션 책임을 분리한다.
 - backend와 ai는 저장소·의존성·CI·빌드·배포를 각각 관리한다. web은 분리 프론트를 선택하는 경우의 예약된 세 번째 레포이며, Thymeleaf 선택 시 구조를 재검토한다. 통신 계약과 통합 검증으로 연결한다.
 - 초기 API Gateway, Kubernetes, Kafka는 필수 구성에 포함하지 않는다.
 
@@ -45,22 +45,22 @@ AI는 Python 실행 환경과 라이브러리, LLM 호출 지연·비용, 공시
 | JDK | 확정 | Eclipse Temurin Java 21 LTS. 보안 업데이트 패치 버전은 뼈대 생성 시 고정 |
 | Spring Boot | 확정 | 4.1.1 |
 | Gradle | 확정 | Wrapper 9.7.1 (공식 Initializr 생성 결과) |
-| RDB | 사용 방향 반영 | MySQL, 추천 버전 8.4 LTS·InnoDB |
+| RDB | 확정 | PostgreSQL 16 |
 | 화면 | 미정 | 백엔드 우선. 별도 프론트 또는 Thymeleaf |
 | AI API | 추천 | Python 3.12, FastAPI, Pydantic, Uvicorn |
 | AI 환경·검사 | 추천 | uv + uv.lock, pytest, Ruff |
-| AI RDB 접근 | 추천 | SQLAlchemy + PyMySQL, Alembic 마이그레이션 |
+| AI RDB 접근 | 추천 | SQLAlchemy + Psycopg 3, Alembic 마이그레이션 |
 | LLM·임베딩 | 공급자·모델 미정 | 외부 API와 제공자 어댑터로 시작, 모델 직접 학습·GPU 서버는 초기 필수 아님 |
-| RAG 검색 | 소규모 검증안 | MySQL에 청크·임베딩을 저장하고 Python에서 후보 벡터 유사도 계산. 규모·지연 검증 후 확정 |
+| RAG 검색 | 소규모 검증안 | PostgreSQL에 청크·임베딩을 저장하고 Python에서 후보 벡터 유사도 계산. 규모·지연 검증 후 확정 |
 | Redis | 기존 설계의 후보 | 시세 캐시 용도. RDB-only 제약에 캐시까지 포함되는지 확인 전 필수 기술로 확정하지 않음 |
 
 Java 21은 최신 LTS라는 이유가 아니라, 장기 지원되는 배포판을 사용하면서 프로젝트에 필요한 기능을 충족하는 보수적인 기준으로 추천한다. Java 25도 LTS이지만 이 프로젝트에서 25 전용 기능을 요구하지 않는다. 개발·CI·컨테이너는 같은 JDK 주 버전을 사용하고 Gradle toolchain으로 고정한다. 지원 중인 Spring Boot와 라이브러리의 실제 빌드 호환성을 뼈대 생성 때 검사한다.
 
-AI는 FastAPI로 내부 HTTP 계약을 제공하고 Pydantic으로 요청·응답을 검증한다. uv는 Python 환경과 의존성 잠금을 관리한다. 재무 값은 MySQL과 Decimal 계산 도구에서 가져오며, LLM에는 도구 선택과 근거 종합을 맡긴다. 처음부터 LangChain·LangGraph를 필수로 넣지 않고 일반 Python 코드로 조회·검색·계산 경로를 명확히 만든다. 복잡한 상태·분기·재개 요구가 생기면 추가 검토한다.
+AI는 FastAPI로 내부 HTTP 계약을 제공하고 Pydantic으로 요청·응답을 검증한다. uv는 Python 환경과 의존성 잠금을 관리한다. 재무 값은 PostgreSQL과 Decimal 계산 도구에서 가져오며, LLM에는 도구 선택과 근거 종합을 맡긴다. 처음부터 LangChain·LangGraph를 필수로 넣지 않고 일반 Python 코드로 조회·검색·계산 경로를 명확히 만든다. 복잡한 상태·분기·재개 요구가 생기면 추가 검토한다.
 
-RDB만 사용한다는 조건을 지키기 위해 별도 벡터 DB와 pgvector를 기본 구성에서 제거한다. MySQL을 선택했다고 대규모 벡터 검색이 자동 해결되는 것은 아니다. 초기 소수 기업·제한된 보고서 표본에서는 기업·기간으로 후보를 좁힌 뒤 Python/NumPy로 유사도를 계산하는 검증안을 사용한다. 임베딩 모델·차원·정규화·버전을 기록하고 다른 모델의 벡터를 섞지 않는다. 데이터 증가 시 메모리·조회량·응답시간을 측정하며, 전용 검색 인덱스 도입은 별도 결정으로 남긴다.
+RDB만 사용한다는 조건을 지키기 위해 별도 벡터 DB와 pgvector를 기본 구성에서 제거한다. PostgreSQL을 선택했다고 대규모 벡터 검색이 자동 해결되는 것은 아니다. 초기 소수 기업·제한된 보고서 표본에서는 기업·기간으로 후보를 좁힌 뒤 Python/NumPy로 유사도를 계산하는 검증안을 사용한다. 임베딩 모델·차원·정규화·버전을 기록하고 다른 모델의 벡터를 섞지 않는다. 데이터 증가 시 메모리·조회량·응답시간을 측정하며, 전용 검색 인덱스 도입은 별도 결정으로 남긴다.
 
-버전 근거: [Temurin 지원 일정](https://adoptium.net/support/), [Spring Boot 요구사항](https://docs.spring.io/spring-boot/system-requirements.html), [MySQL LTS 설치 안내](https://dev.mysql.com/doc/refman/8.4/en/installing.html), [Python 3.12 지원 일정](https://peps.python.org/pep-0693/), [FastAPI 릴리스 기록](https://fastapi.tiangolo.com/release-notes/), [uv 잠금·동기화](https://docs.astral.sh/uv/concepts/projects/sync/).
+버전 근거: [Temurin 지원 일정](https://adoptium.net/support/), [Spring Boot 요구사항](https://docs.spring.io/spring-boot/system-requirements.html), [PostgreSQL 16 문서](https://www.postgresql.org/docs/16/), [Python 3.12 지원 일정](https://peps.python.org/pep-0693/), [FastAPI 릴리스 기록](https://fastapi.tiangolo.com/release-notes/), [uv 잠금·동기화](https://docs.astral.sh/uv/concepts/projects/sync/).
 
 ## 2. 시스템 구성
 
@@ -69,10 +69,10 @@ flowchart TD
     User[사용자 브라우저] -->|HTTPS| Entry[배포 진입점: 리버스 프록시 또는 로드밸런서]
     Entry -->|웹 리소스| Web[프론트엔드]
     Entry -->|/api/v1| Backend[Spring Boot + Spring Security]
-    Backend --> CoreDB[(MySQL 거래 DB)]
+    Backend --> CoreDB[(PostgreSQL 거래 DB)]
     Backend -.-> Redis[(Redis 캐시: 미확정 후보)]
     Backend -->|내부 인증 + 제한시간| AI[Python AI API]
-    AI --> ResearchDB[(MySQL 기업분석 DB)]
+    AI --> ResearchDB[(PostgreSQL 기업분석 DB)]
     AI --> Search[Python 후보 벡터 검색]
     AI --> LLM[외부 LLM API]
     Worker[AI 수집 작업: 관리 실행 또는 배치] --> ResearchDB
@@ -249,11 +249,11 @@ investlab-ai/
 | 기업·공시·재무·계정 매핑·청크·임베딩·수집 작업 | AI 및 수집 작업 |
 | 사용자 AI 답변·출처 이력 | 백엔드 research 모듈. AI가 반환한 근거 식별정보를 저장 |
 
-초기 물리 저장소는 MySQL 8.4 LTS 인스턴스 하나에서 investlab_core와 investlab_research의 두 데이터베이스로 구분하는 안을 추천한다. MySQL의 database/schema 경계는 PostgreSQL과 다르므로 별도 DB 사용자와 접근 권한으로 서비스 소유권을 강제한다. 서비스별 계정·접근 권한·마이그레이션 책임을 분리한다. 물리 인스턴스 분리는 부하·운영 요구에 따라 결정한다.
+초기 물리 저장소는 PostgreSQL 16 인스턴스 하나에서 investlab_core와 investlab_research의 두 데이터베이스로 구분하는 안을 추천한다. PostgreSQL의 database는 독립 접속 경계이며 schema는 같은 database 안의 이름·권한 경계다. 두 database에 각각 전용 역할을 두고 서비스 소유권을 강제한다. 서비스별 계정·접근 권한·마이그레이션 책임을 분리한다. 물리 인스턴스 분리는 부하·운영 요구에 따라 결정한다.
 
-기존 ERD는 단일 논리 모델이다. 같은 MySQL 인스턴스에서는 DB 간 FK가 가능한 경우도 있지만 서비스별 권한·마이그레이션 독립성을 위해 이 설계에서는 서비스 간 FK를 만들지 않는다. `companyId`, 공시·재무 근거 ID 등을 안정적인 계약 식별자로 정의하고, 종목과 기업 매핑·답변 출처 연결을 애플리케이션에서 검증하는 방향으로 ERD를 수정해야 한다. 이 문서만으로 기존 ERD 변경이 확정되지는 않는다.
+기존 ERD는 단일 논리 모델이다. PostgreSQL은 database 간 직접 FK를 지원하지 않으므로 이 설계에서는 서비스 간 관계를 계약 식별자로 관리한다. 같은 database의 schema 분리를 선택하면 FK 사용이 가능하지만 이는 별도 아키텍처 변경이다. `companyId`, 공시·재무 근거 ID 등을 안정적인 계약 식별자로 정의하고, 종목과 기업 매핑·답변 출처 연결을 애플리케이션에서 검증하는 방향으로 ERD를 수정해야 한다. 이 문서만으로 기존 ERD 변경이 확정되지는 않는다.
 
-청크·임베딩 원본은 MySQL 기업분석 DB에 보관한다. Python의 후보 벡터 검색은 소규모 표본으로 정확도·지연을 검증한 뒤 범위를 정한다. Redis를 도입하더라도 시세 캐시 용도로만 사용하고 거래 잔고의 원본으로 사용하지 않는다. MySQL 물리 설계에서 InnoDB, utf8mb4, UTC 시각, Decimal, UUID 표현, 복합키·잠금·인덱스를 구체화한다.
+청크·임베딩 원본은 PostgreSQL 기업분석 DB에 보관한다. Python의 후보 벡터 검색은 소규모 표본으로 정확도·지연을 검증한 뒤 범위를 정한다. Redis를 도입하더라도 시세 캐시 용도로만 사용하고 거래 잔고의 원본으로 사용하지 않는다. PostgreSQL 16 물리 설계에서 UTF8, UUID, TIMESTAMPTZ(UTC), NUMERIC, JSONB, 부분 유니크 인덱스·DEFERRABLE FK·잠금을 구체화한다. UUIDv7은 애플리케이션에서 생성한다. CITEXT·pg_trgm 확장은 필요 기능의 마이그레이션에서 관리한다.
 
 ## 8. AI 수집 작업과 질의
 
@@ -280,13 +280,13 @@ investlab-ai/
 ## 10. 코드 뼈대 생성 전 결정할 것
 
 1. 확정된 Java 21 + Spring Boot 4.1.1을 빌드·CI·컨테이너에 적용하고 Gradle Wrapper 정확한 버전 고정. AI 추천 구성의 의존성 검증. 프론트 선택은 백엔드 구현 이후로 보류.
-2. MySQL 8.4 LTS 추천 적용, 물리 ERD·서비스 간 식별자 연결 방식, RDB-only 조건에서의 검색 규모 검증과 캐시 허용 여부.
+2. PostgreSQL 16 적용, 물리 ERD·서비스 간 식별자 연결 방식, RDB-only 조건에서의 검색 규모 검증과 캐시 허용 여부.
 3. P-01~08 승인 및 시장별 비용·수량·거래시간·가격 유효시간.
 4. 공개 API·내부 AI API와 동기 호출·제한시간·오류 정책.
 5. 개발·운영 배포 환경, 도메인, 쿠키·CORS·Origin 설정.
 6. 시세·공시·재무 공급자, 데이터 범위, 이용 조건 및 AI 비용 한도.
 
-원본 기준: 기능명세서 v1.1, ERD·테이블 정의서 v1.0, API 명세서 v1.0. 원본은 현재 프로젝트 루트에 있다.
+원본 기준: 기능명세서 v1.1, ERD·테이블 정의서 v1.1, 보관된 API 명세서 v1.0(API v1.3 대조 필요). 원본은 현재 프로젝트 루트에 있다.
 
 ## 11. 팀 책임과 변경 승인
 
