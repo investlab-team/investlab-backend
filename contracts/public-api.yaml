@@ -3,6 +3,9 @@ info:
   title: InvestLab Public API
   version: 0.1.0
   description: 초기 보안 뼈대 계약. 도메인 API는 기존 PDF를 기준으로 후속 이슈에서 확장합니다.
+externalDocs:
+  description: API 명세 및 A·B·C 담당 안내
+  url: https://github.com/investlab-team/investlab-backend/blob/main/docs/api/README.md
 paths:
   /actuator/health:
     get:
