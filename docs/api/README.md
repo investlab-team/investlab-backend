@@ -18,14 +18,14 @@ ERD v1.1은 API v1.3을 참조하지만 현재 저장소에는 API v1.0만 있�
 
 | 영역·기능 ID | API v1.0 경로 | 구현 책임 |
 | --- | --- | --- |
-| AUTH-01~06 | `POST /auth/signup`, `/auth/email/verify`, `/auth/email/resend`, `/auth/login`, `/auth/refresh`, `/auth/logout`; `GET /auth/oauth/google`, `/auth/oauth/google/callback` | 회원가입·이메일 인증·JWT·구글 로그인·토큰 관리 |
+| AUTH-01부터 AUTH-06까지 | `POST /auth/signup`, `/auth/email/verify`, `/auth/email/resend`, `/auth/login`, `/auth/refresh`, `/auth/logout`; `GET /auth/oauth/google`, `/auth/oauth/google/callback` | 회원가입·이메일 인증·JWT·구글 로그인·토큰 관리 |
 | USER-01 | `GET /me` | 내 정보 및 계좌 요약. 자산·순위는 B의 평가 기능과 A의 랭킹 기능 재사용 |
-| ACCOUNT-01~03 | `POST /accounts`; `GET /accounts`, `/accounts/{accountId}`; `POST /accounts/{accountId}/close` | 계좌 개설·목록·상세·해지. 계좌 상세의 자산 계산은 B와 연결 |
-| STOCK-01~03 | `GET /instruments`, `/instruments/search`, `/instruments/{instrumentId}` | 종목 목록·검색·상세. B의 시세 기능과 C의 기업 데이터 연결 |
+| ACCOUNT-01부터 ACCOUNT-03까지 | `POST /accounts`; `GET /accounts`, `/accounts/{accountId}`; `POST /accounts/{accountId}/close` | 계좌 개설·목록·상세·해지. 계좌 상세의 자산 계산은 B와 연결 |
+| STOCK-01부터 STOCK-03까지 | `GET /instruments`, `/instruments/search`, `/instruments/{instrumentId}` | 종목 목록·검색·상세. B의 시세 기능과 C의 기업 데이터 연결 |
 | STOCK-05, WATCH-01 | `/me/watch-items`, `/me/watchlists` 및 하위 등록·변경·삭제·이동 API | 관심종목·관심목록 및 소유권·개수 제한 |
-| RANK-01~02 | `GET /rankings`, `/accounts/{accountId}/ranking`; `PATCH /accounts/{accountId}/ranking-preference` | 랭킹 배치·조회·노출 설정. 자산 평가 결과는 B의 기능 사용 |
+| RANK-01부터 RANK-02까지 | `GET /rankings`, `/accounts/{accountId}/ranking`; `PATCH /accounts/{accountId}/ranking-preference` | 랭킹 배치·조회·노출 설정. 자산 평가 결과는 B의 기능 사용 |
 | FIN-01, DATA-01 조회 | `GET /companies/{companyId}/financials`, `/companies/{companyId}/disclosures`, `/disclosures/{documentId}` | 공개 조회 API·권한·응답 변환. 수집·정규화·계산은 C |
-| AI-01~06, AI-09~10 공개 연동 | `POST /ai/answers`; `GET /ai/answers/{answerId}` | 입력·권한 검사, 내부 AI 호출, 대화·답변·근거 이력 저장·조회 |
+| AI-01부터 AI-06까지, AI-09부터 AI-10까지 공개 연동 | `POST /ai/answers`; `GET /ai/answers/{answerId}` | 입력·권한 검사, 내부 AI 호출, 대화·답변·근거 이력 저장·조회 |
 | MEMO-01〔권장〕 | `GET / POST /instruments/{instrumentId}/memos`; `PATCH / DELETE /memos/{memoId}` | 종목메모 관리 |
 
 비밀번호 재설정, 닉네임 온보딩, 회원 탈퇴는 ERD v1.1에 반영된 A의 담당 기능이다. 해당 경로와 요청·응답은 새 API 명세와 대조해 추가한다.
@@ -34,9 +34,9 @@ ERD v1.1은 API v1.3을 참조하지만 현재 저장소에는 API v1.0만 있�
 
 | 영역·기능 ID | API v1.0 경로 또는 내부 작업 | 구현 책임 |
 | --- | --- | --- |
-| TRADE-01~05 | `POST /accounts/{accountId}/orders`; `GET /accounts/{accountId}/orders`, `/accounts/{accountId}/orders/{orderId}`, `/accounts/{accountId}/executions`; `POST /accounts/{accountId}/orders/{orderId}/cancel` | 매수·매도, 미체결 조회·취소, 주문·체결 이력 |
+| TRADE-01부터 TRADE-05까지 | `POST /accounts/{accountId}/orders`; `GET /accounts/{accountId}/orders`, `/accounts/{accountId}/orders/{orderId}`, `/accounts/{accountId}/executions`; `POST /accounts/{accountId}/orders/{orderId}/cancel` | 매수·매도, 미체결 조회·취소, 주문·체결 이력 |
 | TRADE-04 | 내부 1분 체결 배치·장 마감 처리 | 예약 해제·현금·보유·체결·원장·실현손익을 한 트랜잭션으로 변경 |
-| PORT-01~02 | `GET /accounts/{accountId}/portfolio` 및 내부 자산 평가 기능 | 잔고·평가/실현손익·총자산·수익률·예약 현금/수량 |
+| PORT-01부터 PORT-02까지 | `GET /accounts/{accountId}/portfolio` 및 내부 자산 평가 기능 | 잔고·평가/실현손익·총자산·수익률·예약 현금/수량 |
 | RESET-01 | `POST /accounts/{accountId}/reset` | 미체결 취소·예약 해제·보유 제거·현금 초기화·성과구간 교체 |
 | SYNC-01, STOCK-04 | 내부 시세 수집; `GET /instruments/{instrumentId}/candles` | 시장 정책·운영일·시세 갱신·봉 데이터·차트 조회용 지표 |
 | TRADE-06, QUOTE-01〔권장〕 | `GET /instruments/{instrumentId}/orderbook`; WebSocket 계약은 후속 확정 | 최우선 호가·호가주문·실시간 시세 |
@@ -45,9 +45,9 @@ ERD v1.1은 API v1.3을 참조하지만 현재 저장소에는 API v1.0만 있�
 
 | 영역·기능 ID | 구현 책임 | 백엔드 연결 |
 | --- | --- | --- |
-| DATA-01~03 | 공시·재무 수집, 원문 처리, 계정 매핑·정규화, 수집 실패 재시도 | A의 기업·재무 공개 조회 API에 데이터 제공 |
-| RAG-01~06 | 전처리·청크·임베딩·기업/기간 필터 검색 | 검색 근거와 문서 식별정보 반환 |
-| AI-01~06, AI-09~10 | 의도 분석·추가 질문·도구 선택·재무 조회/계산·답변 생성·출처·근거 부족 처리 | A의 공개 AI API에서 내부 호출 |
+| DATA-01부터 DATA-03까지 | 공시·재무 수집, 원문 처리, 계정 매핑·정규화, 수집 실패 재시도 | A의 기업·재무 공개 조회 API에 데이터 제공 |
+| RAG-01부터 RAG-06까지 | 전처리·청크·임베딩·기업/기간 필터 검색 | 검색 근거와 문서 식별정보 반환 |
+| AI-01부터 AI-06까지, AI-09부터 AI-10까지 | 의도 분석·추가 질문·도구 선택·재무 조회/계산·답변 생성·출처·근거 부족 처리 | A의 공개 AI API에서 내부 호출 |
 | 내부 AI API·운영 | 서비스 인증, 모델 연동, 오류 처리, 토큰·비용·응답시간 기록 | 계약 관리 송상진, AI 구현 유광민. A+C가 호환성 확인 |
 
 공개 `/ai/answers`와 사용자 대화 이력은 A가 관리하고, Python의 분석·검색·계산은 C가 구현한다. AI는 계좌·주문·잔고를 변경하지 않는다. 수집·RAG 작업을 사용자용 공개 API로 임의 노출하지 않는다.
