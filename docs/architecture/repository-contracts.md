@@ -167,7 +167,7 @@ webArtifact: <프론트 배포 식별자>
 
 ### 10.1 브랜치
 
-main은 검증된 기본 브랜치로 사용하고 직접 push하지 않는다. 별도 develop 브랜치는 초기 필수로 두지 않는다. main에서 작업 브랜치를 만들고 PR로 변경한다.
+세 레포의 기본·개발 통합 브랜치는 `dev`다. 최신 `dev`에서 이슈별 작업 브랜치를 만들고 PR의 base는 `dev`로 설정한다. `dev`와 `main`에 직접 push하지 않는다. `main`은 릴리스 기준으로 보존하며 팀이 릴리스 범위·시점을 합의한 뒤 별도 PR로 반영한다. 일상 기능 PR은 `main`으로 보내지 않는다.
 
 형식: `<type>/<레포 내 이슈번호>-<영문-kebab-case>`
 
@@ -239,11 +239,11 @@ PR 제목은 커밋 형식과 동일하게 작성한다. PR 본문에 다음을 
 - 모든 변경은 이슈·브랜치·PR로 연결하고 필수 CI를 통과해야 한다.
 - API·DB·인증·인프라 변경은 영향받는 담당자와 확인한다.
 - 미해결 대화를 해결한 뒤 Squash and merge한다. 최종 메시지는 PR 제목 컨벤션을 따른다.
-- main 직접 push·force push·삭제는 금지한다. 오류는 fix/revert PR로 수정한다.
+- dev·main 직접 push·force push·삭제는 금지한다. 오류는 fix/revert PR로 수정한다.
 
 ### 10.5 GitHub 보호 설정
 
-main의 PR 필수·필수 CI·최신 main 기준 검사·대화 해결·force push 및 삭제 금지는 유지한다. 필수 승인 인원과 자기 PR 머지 제한은 적용하지 않는다. CODEOWNERS는 계정 확인 후 담당 안내 용도로 검토하며 필수 승인 조건으로 사용하지 않는다.
+dev와 main의 PR 필수·필수 CI·각 대상 브랜치 최신 기준 검사·대화 해결·force push 및 삭제 금지는 유지한다. 필수 승인 인원과 자기 PR 머지 제한은 적용하지 않는다. CODEOWNERS는 계정 확인 후 담당 안내 용도로 검토하며 필수 승인 조건으로 사용하지 않는다.
 
 근거: [GitHub 필수 리뷰](https://docs.github.com/en/pull-requests/how-tos/review-pull-requests/approving-a-pull-request-with-required-reviews), [Ruleset 규칙](https://docs.github.com/en/repositories/configuring-branches-and-merges-in-your-repository/managing-rulesets/available-rules-for-rulesets).
 
