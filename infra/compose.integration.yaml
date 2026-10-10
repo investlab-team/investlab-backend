@@ -1,0 +1,40 @@
+services:
+  mysql:
+    image: mysql:8.4
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Set a local root password}
+      CORE_DB_PASSWORD: ${CORE_DB_PASSWORD:?Use an alphanumeric local password}
+      RESEARCH_DB_PASSWORD: ${RESEARCH_DB_PASSWORD:?Use an alphanumeric local password}
+    ports:
+      - "127.0.0.1:3306:3306"
+    volumes:
+      - mysql-data:/var/lib/mysql
+      - ./mysql:/docker-entrypoint-initdb.d:ro
+    healthcheck:
+      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      interval: 10s
+      timeout: 5s
+      retries: 12
+  backend:
+    profiles: [apps]
+    build: ..
+    environment:
+      DB_URL: jdbc:mysql://mysql:3306/investlab_core?connectionTimeZone=UTC
+      DB_USERNAME: investlab_core
+      DB_PASSWORD: ${CORE_DB_PASSWORD:?Set CORE_DB_PASSWORD}
+      JWT_SECRET_BASE64: ${JWT_SECRET_BASE64:?Set a random base64 JWT key}
+      AI_BASE_URL: http://ai:8000
+    ports:
+      - "127.0.0.1:8080:8080"
+    depends_on:
+      mysql:
+        condition: service_healthy
+  ai:
+    profiles: [apps]
+    build: ../../investlab-ai
+    environment:
+      INVESTLAB_AI_SERVICE_TOKEN: ${INVESTLAB_AI_SERVICE_TOKEN:?Set a random service token}
+    ports:
+      - "127.0.0.1:8000:8000"
+volumes:
+  mysql-data:

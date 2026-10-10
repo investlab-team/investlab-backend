@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: investlab-backend
+  datasource:
+    url: ${DB_URL:jdbc:mysql://localhost:3306/investlab_core?connectionTimeZone=UTC}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+server:
+  port: ${SERVER_PORT:8080}
+  error:
+    include-message: never
+    include-stacktrace: never
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
+investlab:
+  jwt:
+    secret-base64: ${JWT_SECRET_BASE64}
+    issuer: ${JWT_ISSUER:investlab}
+    audience: ${JWT_AUDIENCE:investlab-api}
+  ai:
+    base-url: ${AI_BASE_URL:http://localhost:8000}

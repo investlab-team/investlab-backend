@@ -1,0 +1,17 @@
+.DS_Store
+.env
+.env.*
+!.env.example
+.venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+.gradle/
+build/
+node_modules/
+dist/
+.idea/
+*.iml
+
+.git/

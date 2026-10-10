@@ -1,0 +1,12 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:investlab;MODE=MySQL;DB_CLOSE_DELAY=-1
+    username: sa
+    password: ""
+  flyway:
+    enabled: false
+investlab:
+  jwt:
+    secret-base64: dGVzdC1vbmx5LWtleS1ub3QtZm9yLXByb2R1Y3Rpb24=
+    issuer: investlab
+    audience: investlab-api

@@ -15,3 +15,5 @@ Java 21 LTS(Eclipse Temurin), Spring Boot 4.1.1, Gradle Wrapper 9.7.1. MySQL 8.4
 백엔드 송상진·박진호(기능별 미정), 명세·인프라 송상진. 작성자는 자기 PR을 머지하지 않습니다. docs/architecture를 기준으로 하고 AI 내부 계약은 AI 레포의 고정 버전에서 참조합니다.
 
 프론트는 미정이며 Thymeleaf 결정 전 templates/static을 구현하지 않습니다.
+
+초기 main에는 협업 템플릿과 README만 등록합니다. 앱 코드·전체 설정은 chore/1-initial-scaffold PR에서 검토 후 다른 팀원이 머지합니다.
