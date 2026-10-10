@@ -5,37 +5,62 @@ labels: ["documentation"]
 body:
   - type: markdown
     attributes:
-      value: "모든 작업은 이슈 등록 후 시작합니다. 작성자는 자신의 PR을 머지하지 않습니다."
+      value: "모든 작업은 이슈 등록 후 시작합니다. 아래 예시를 실제 작업에 맞게 수정하세요. PR은 dev 대상으로 생성하며, 회의에서 내용을 공유하고 필수 CI가 통과하면 작성자도 머지할 수 있습니다."
   - type: input
     id: owner
     attributes:
       label: 담당자
-      description: 실명과 GitHub 계정명. 백엔드 기능 분담은 이슈에서 합의합니다.
+      description: 실제 담당자의 실명과 GitHub 계정명을 작성하세요.
+      placeholder: "예: 송상진 / @song-sang-jin"
     validations:
       required: true
   - type: textarea
     id: purpose
     attributes:
       label: 목적과 변경 내용
+      value: |
+        ## 목적
+        이 작업이 필요한 이유와 해결할 문제를 작성합니다.
+
+        ## 작업 내용
+        - [ ] 구현 또는 수정할 항목 1
+        - [ ] 구현 또는 수정할 항목 2
     validations:
       required: true
   - type: textarea
     id: acceptance
     attributes:
       label: 완료 기준
-      placeholder: "- [ ] 검증 가능한 완료 조건"
+      value: |
+        - [ ] 의도한 동작을 확인한다.
+        - [ ] 정상 상황과 오류 상황을 검증한다.
+        - [ ] 필요한 명세와 문서를 갱신한다.
+        - [ ] 관련 CI 검사를 통과한다.
     validations:
       required: true
   - type: textarea
     id: dependencies
     attributes:
       label: 관련 레포·API·이슈
-      description: 영향이 없으면 해당 없음. 다른 레포 이슈는 전체 URL로 연결합니다.
+      description: 다른 레포 이슈는 전체 URL로 연결합니다. 영향이 없으면 해당 없음을 유지하세요.
+      value: |
+        관련 레포: 해당 없음
+        관련 API: 해당 없음
+        관련 이슈: 해당 없음
     validations:
       required: true
   - type: textarea
     id: verification
     attributes:
       label: 검증 계획·배포 영향
+      value: |
+        ## 검증 계획
+        - [ ] 정상 상황: 입력과 예상 결과 작성
+        - [ ] 오류 상황: 입력과 예상 결과 작성
+
+        ## 배포 영향
+        환경 변수 변경: 없음
+        DB 변경·마이그레이션: 없음
+        배포 순서·주의 사항: 없음
     validations:
       required: true
