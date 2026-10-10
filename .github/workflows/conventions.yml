@@ -1,0 +1,26 @@
+name: Conventions
+on:
+  pull_request:
+    types: [opened, edited, synchronize, reopened, ready_for_review]
+permissions:
+  contents: read
+jobs:
+  conventions:
+    name: conventions
+    runs-on: ubuntu-latest
+    env:
+      PR_TITLE: ${{ github.event.pull_request.title }}
+      PR_BODY: ${{ github.event.pull_request.body }}
+      PR_BRANCH: ${{ github.head_ref }}
+    steps:
+      - name: Check PR conventions
+        shell: python
+        run: |
+          import os, re
+          title = os.environ['PR_TITLE']
+          branch = os.environ['PR_BRANCH']
+          body = os.environ['PR_BODY']
+          assert re.match(r'^(feat|fix|refactor|docs|test|chore|ci|perf|style|revert)(\([a-z0-9-]+\))?!?: .+', title), 'PR 제목 형식을 확인하세요.'
+          assert re.fullmatch(r'(feat|fix|refactor|docs|test|chore|ci|perf|hotfix)/[1-9][0-9]*-[a-z0-9]+(?:-[a-z0-9]+)*', branch), '브랜치에 이슈 번호와 영문 요약이 필요합니다.'
+          issue = branch.split('/')[1].split('-')[0]
+          assert re.search(r'(?<![0-9])#' + issue + r'\b', body), 'PR 본문에 브랜치의 이슈를 연결하세요.'
