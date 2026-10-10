@@ -1,41 +1,65 @@
 name: "설정·문서·인프라 작업"
-description: "설정·문서·인프라 작업 이슈를 필수 항목으로 등록합니다."
+description: "설정, 문서, CI 또는 인프라를 변경할 때 선택합니다."
 title: "chore: "
 labels: ["documentation"]
 body:
   - type: markdown
     attributes:
-      value: "모든 작업은 이슈 등록 후 시작합니다. 작성자는 자신의 PR을 머지하지 않습니다."
+      value: |
+        작업 전에 이슈를 등록합니다. 아래 틀을 실제 작업에 맞게 수정하세요.
+        체크리스트는 이미 입력되어 있으니 내용을 바꾸면 됩니다. 완료한 항목은 등록 후 체크하세요.
+        회의에서 변경 내용과 검증 결과를 설명하고 CI 통과 후 작성자가 자신의 PR을 머지할 수 있습니다.
   - type: input
     id: owner
     attributes:
       label: 담당자
-      description: 실명과 GitHub 계정명. 백엔드 기능 분담은 이슈에서 합의합니다.
+      description: "이 작업을 진행할 사람의 이름과 GitHub 계정입니다. 오른쪽 Assignees도 직접 지정하세요."
+      placeholder: "예: 유광민 (@github-id)"
     validations:
       required: true
   - type: textarea
     id: purpose
     attributes:
-      label: 목적과 변경 내용
+      label: "무엇을 변경하나요?"
+      description: "변경할 파일이나 설정과 필요한 이유를 적습니다."
+      value: |
+        ### 변경할 항목
+        - [ ] 
+        
+        ### 변경 이유
+        
     validations:
       required: true
   - type: textarea
     id: acceptance
     attributes:
-      label: 완료 기준
-      placeholder: "- [ ] 검증 가능한 완료 조건"
+      label: 완료 조건
+      description: "무엇을 확인하면 이 작업이 끝났다고 볼 수 있나요? 아래 기본 조건을 실제 결과에 맞게 바꾸세요. 예: 올바른 로그인 정보로 JWT가 발급된다."
+      value: |
+        - [ ] 필요한 파일이나 설정을 반영한다.
+        - [ ] 변경한 내용과 사용 방법을 문서에 반영한다.
+        - [ ] 아래 확인 방법으로 적용 결과를 검증한다.
     validations:
       required: true
   - type: textarea
     id: dependencies
     attributes:
-      label: 관련 레포·API·이슈
-      description: 영향이 없으면 해당 없음. 다른 레포 이슈는 전체 URL로 연결합니다.
+      label: 연결된 작업
+      description: "함께 진행하거나 먼저 완료해야 하는 이슈·PR·API 문서입니다. 다른 레포와 함께 수정해야 하면 링크를 적고, 없으면 기본값을 유지하세요."
+      value: |
+        없음
     validations:
       required: true
   - type: textarea
     id: verification
     attributes:
-      label: 검증 계획·배포 영향
+      label: 확인 방법과 영향
+      description: "완료 조건을 어떻게 테스트할지 적습니다. 다른 기능·DB·배포에 영향이 없다면 없음으로 적으세요."
+      value: |
+        ### 확인 방법
+        - [ ] 
+        
+        ### 다른 기능·DB·배포에 미치는 영향
+        없음
     validations:
       required: true
