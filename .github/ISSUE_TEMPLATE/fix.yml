@@ -24,13 +24,13 @@ body:
       description: "현재 문제, 재현 방법, 기대하는 결과를 적습니다."
       value: |
         ### 현재 문제
-        
+
         ### 재현 방법
-        1. 
-        2. 
-        
+        1.
+        2.
+
         ### 기대하는 결과
-        
+
     validations:
       required: true
   - type: textarea
@@ -60,8 +60,8 @@ body:
       description: "완료 조건을 어떻게 테스트할지 적습니다. 다른 기능·DB·배포에 영향이 없다면 없음으로 적으세요."
       value: |
         ### 확인 방법
-        - [ ] 
-        
+        - [ ] 내용을 적으세요.
+
         ### 다른 기능·DB·배포에 미치는 영향
         없음
     validations:
