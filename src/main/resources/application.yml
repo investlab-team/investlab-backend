@@ -2,7 +2,7 @@ spring:
   application:
     name: investlab-backend
   datasource:
-    url: ${DB_URL:jdbc:mysql://localhost:3306/investlab_core?connectionTimeZone=UTC}
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/investlab_core}
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
   jpa:

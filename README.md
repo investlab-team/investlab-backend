@@ -1,6 +1,6 @@
 # InvestLab Backend
 
-Java 21 LTS(Eclipse Temurin), Spring Boot 4.1.1, Gradle Wrapper 9.7.1. MySQL 8.4 LTS, Spring Security JWT 인증 검증 뼈대입니다.
+Java 21 LTS(Eclipse Temurin), Spring Boot 4.1.1, Gradle Wrapper 9.7.1. PostgreSQL 16, Spring Security JWT 인증 검증 뼈대입니다.
 
 ## 상태
 
@@ -8,7 +8,7 @@ Java 21 LTS(Eclipse Temurin), Spring Boot 4.1.1, Gradle Wrapper 9.7.1. MySQL 8.4
 
 ## 실행·검사
 
-`.env.example`을 참고해 환경변수를 IDE 또는 셸에 설정합니다(자동 .env 로딩 없음). MySQL 준비 후 `./gradlew bootRun`을 실행합니다. `./gradlew check bootJar`로 검사·빌드합니다. 테스트 H2는 빠른 보안 뼈대 검사용이며 MySQL 잠금·거래 정합성 검증을 대체하지 않습니다.
+`.env.example`을 참고해 환경변수를 IDE 또는 셸에 설정합니다(자동 .env 로딩 없음). PostgreSQL 준비 후 `./gradlew bootRun`을 실행합니다. `./gradlew check bootJar`로 검사·빌드합니다. 테스트 H2는 빠른 보안 뼈대 검사용이며 PostgreSQL 잠금·거래 정합성 검증을 대체하지 않습니다.
 
 ## 책임
 

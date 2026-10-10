@@ -1,17 +1,19 @@
 services:
-  mysql:
-    image: mysql:8.4
+  postgres:
+    image: postgres:16
     environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD:?Set a local root password}
-      CORE_DB_PASSWORD: ${CORE_DB_PASSWORD:?Use an alphanumeric local password}
-      RESEARCH_DB_PASSWORD: ${RESEARCH_DB_PASSWORD:?Use an alphanumeric local password}
+      POSTGRES_USER: investlab_admin
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:?Set a local admin password}
+      CORE_DB_PASSWORD: ${CORE_DB_PASSWORD:?Set a local database password}
+      RESEARCH_DB_PASSWORD: ${RESEARCH_DB_PASSWORD:?Set a local database password}
     ports:
-      - "127.0.0.1:3306:3306"
+      - "127.0.0.1:5432:5432"
     volumes:
-      - mysql-data:/var/lib/mysql
-      - ./mysql:/docker-entrypoint-initdb.d:ro
+      - postgres-data:/var/lib/postgresql/data
+      - ./postgres:/docker-entrypoint-initdb.d:ro
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h localhost -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
       interval: 10s
       timeout: 5s
       retries: 12
@@ -19,7 +21,7 @@ services:
     profiles: [apps]
     build: ..
     environment:
-      DB_URL: jdbc:mysql://mysql:3306/investlab_core?connectionTimeZone=UTC
+      DB_URL: jdbc:postgresql://postgres:5432/investlab_core
       DB_USERNAME: investlab_core
       DB_PASSWORD: ${CORE_DB_PASSWORD:?Set CORE_DB_PASSWORD}
       JWT_SECRET_BASE64: ${JWT_SECRET_BASE64:?Set a random base64 JWT key}
@@ -27,14 +29,22 @@ services:
     ports:
       - "127.0.0.1:8080:8080"
     depends_on:
-      mysql:
+      postgres:
         condition: service_healthy
   ai:
     profiles: [apps]
     build: ../../investlab-ai
     environment:
+      RESEARCH_DB_HOST: postgres
+      RESEARCH_DB_PORT: "5432"
+      RESEARCH_DB_NAME: investlab_research
+      RESEARCH_DB_USERNAME: investlab_research
+      RESEARCH_DB_PASSWORD: ${RESEARCH_DB_PASSWORD:?Set RESEARCH_DB_PASSWORD}
       INVESTLAB_AI_SERVICE_TOKEN: ${INVESTLAB_AI_SERVICE_TOKEN:?Set a random service token}
     ports:
       - "127.0.0.1:8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
 volumes:
-  mysql-data:
+  postgres-data:

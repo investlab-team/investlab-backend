@@ -1,9 +1,11 @@
-# 로컬 통합 실행 초안
+# 통합 실행 — PostgreSQL 16
 
-Docker Desktop을 실행하고 부모 폴더 아래 backend·ai 레포를 나란히 clone합니다. 셸에 MYSQL_ROOT_PASSWORD, CORE_DB_PASSWORD, RESEARCH_DB_PASSWORD, JWT_SECRET_BASE64, INVESTLAB_AI_SERVICE_TOKEN을 설정합니다. 초기 DB 생성 스크립트에 전달하는 DB 비밀번호는 영문·숫자만 사용합니다(운영 프로비저닝 아님).
+Docker Desktop을 실행하고 부모 폴더 아래 backend·ai 레포를 나란히 clone합니다. 셸에 POSTGRES_PASSWORD(관리자), CORE_DB_PASSWORD, RESEARCH_DB_PASSWORD, JWT_SECRET_BASE64, INVESTLAB_AI_SERVICE_TOKEN을 설정합니다. 실제 비밀번호와 토큰은 커밋하지 않습니다.
 
-`docker compose -f infra/compose.integration.yaml up -d mysql`로 MySQL만 실행하거나, `docker compose -f infra/compose.integration.yaml --profile apps up --build`로 앱을 함께 실행합니다.
+`docker compose -f infra/compose.integration.yaml up -d postgres`로 DB만 실행하거나, `docker compose -f infra/compose.integration.yaml --profile apps up --build`로 앱을 함께 실행합니다.
 
-현재 서비스 인증·RAG 기반 준비 단계입니다. backend→AI HTTP 연동과 AI DB 조회는 후속입니다. Redis는 미확정이므로 포함하지 않습니다. 운영용 배포 파일이 아니며 이미지 digest 고정·Secret 저장소·네트워크·DB 최소권한·DB readiness를 운영 설정 단계에서 추가합니다.
+PostgreSQL 16 하나에 investlab_core·investlab_research 두 database와 각각의 전용 역할을 생성합니다. DB는 로컬 127.0.0.1:5432로만 공개합니다. 초기화 스크립트는 새 postgres-data 볼륨의 최초 기동 때만 실행됩니다. 기존 데이터가 있으면 별도의 백업·이관 계획이 필요하며 이 구성 변경이 기존 볼륨을 삭제하거나 이관하지 않습니다.
 
-이 환경에서는 Docker 데몬이 실행되지 않아 컨테이너 실행 검증을 아직 하지 않았습니다. 초기화는 새 빈 볼륨에서만 실행됩니다. 데이터 삭제 명령은 자동으로 실행하지 않습니다.
+AI의 연구 DB 환경변수는 연결 계약을 위한 설정이며 아직 업무 Repository·Alembic 마이그레이션은 구현 전입니다. backend의 JDBC 드라이버는 PostgreSQL, Flyway는 PostgreSQL 모듈을 사용합니다. H2 보안 테스트는 PostgreSQL의 잠금·부분 인덱스·지연 FK를 검증하지 않습니다.
+
+도메인 물리 설계 시 ERD v1.1의 서비스 경계를 넘는 FK를 계약 식별자 참조로 구분합니다. 벡터 저장소·Redis는 이번 전환으로 추가하지 않습니다.
