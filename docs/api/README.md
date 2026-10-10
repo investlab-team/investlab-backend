@@ -8,7 +8,7 @@
 - [공개 OpenAPI 계약](../../contracts/public-api.yaml): 현재 보안 뼈대의 계약이며 전체 업무 API는 아직 구현되지 않았다.
 - [기능명세서 v1.1](../requirements/인베스트랩_기능명세서_v1.1.pdf): 필수·권장·후속 범위와 완료 기준.
 - [ERD v1.1](../requirements/인베스트랩_ERD_테이블정의서_v1.1.pdf): 데이터 관계와 거래 트랜잭션 규칙.
-- [AI 내부 OpenAPI 계약](https://github.com/investlab-team/investlab-ai/blob/main/contracts/internal-ai-api.yaml): C의 구현과 A의 호출 연동 기준. 구현 시 사용하는 계약 커밋·버전을 고정한다.
+- [AI 내부 OpenAPI 계약](https://github.com/investlab-team/investlab-ai/blob/dev/contracts/internal-ai-api.yaml): C의 구현과 A의 호출 연동 기준. 구현 시 사용하는 계약 커밋·버전을 고정한다.
 
 이 문서는 기존 API 명세에 적용하는 담당자 부록이다. 아래 경로는 보관된 API v1.0을 기준으로 하며, 공개 경로의 공통 접두사는 `/api/v1`이다. 담당 배정은 구현 완료를 뜻하지 않는다.
 
