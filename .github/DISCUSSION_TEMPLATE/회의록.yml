@@ -1,0 +1,71 @@
+title: "[회의록] YYYY-MM-DD — 회의 주제"
+body:
+  - type: markdown
+    attributes:
+      value: "예시를 실제 회의 내용으로 바꿔 작성하세요. 회의록은 이슈 연결 없이 등록할 수 있습니다."
+  - type: input
+    id: date
+    attributes:
+      label: 회의 일시
+      placeholder: "YYYY-MM-DD HH:mm (KST)"
+    validations:
+      required: true
+  - type: textarea
+    id: attendees
+    attributes:
+      label: 참석자
+      value: |
+        - 송상진
+        - 박진호
+        - 유광민
+      description: 실제 참석자만 남겨주세요.
+    validations:
+      required: true
+  - type: textarea
+    id: agenda
+    attributes:
+      label: 안건
+      value: |
+        - 이번 회의에서 이야기할 주제 1
+        - 이번 회의에서 이야기할 주제 2
+    validations:
+      required: true
+  - type: textarea
+    id: discussion
+    attributes:
+      label: 논의 내용
+      value: |
+        ## 안건 1
+        - 현재 상황:
+        - 나온 의견:
+
+        ## 안건 2
+        - 현재 상황:
+        - 나온 의견:
+    validations:
+      required: true
+  - type: textarea
+    id: decisions
+    attributes:
+      label: 결정 사항
+      value: |
+        - 결정한 내용:
+        - 결정 이유:
+        - 보류한 내용: 없음
+    validations:
+      required: true
+  - type: textarea
+    id: actions
+    attributes:
+      label: 후속 작업 (선택)
+      description: 할 일이 없으면 비워두거나 해당 없음으로 바꿔주세요.
+      value: |
+        - [ ] 담당자 / 할 일 / 목표일
+  - type: textarea
+    id: next-meeting
+    attributes:
+      label: 다음 회의·참고 자료 (선택)
+      value: |
+        다음 회의: 미정
+        참고 링크: 없음
+        관련 이슈: 없음 (필수 아님)
