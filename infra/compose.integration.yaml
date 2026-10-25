@@ -21,6 +21,7 @@ services:
     profiles: [apps]
     build: ..
     environment:
+      SPRING_PROFILES_ACTIVE: postgres
       DB_URL: jdbc:postgresql://postgres:5432/investlab_core
       DB_USERNAME: investlab_core
       DB_PASSWORD: ${CORE_DB_PASSWORD:?Set CORE_DB_PASSWORD}

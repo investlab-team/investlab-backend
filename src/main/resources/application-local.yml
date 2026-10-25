@@ -1,0 +1,17 @@
+# 기본 개발 실행: 별도 DB 서버 없이 메모리 H2를 사용합니다.
+spring:
+  datasource:
+    url: jdbc:h2:mem:investlab;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DB_CLOSE_DELAY=-1
+    username: sa
+    password: ""
+    driver-class-name: org.h2.Driver
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: create-drop
+  flyway:
+    enabled: false
+investlab:
+  jwt:
+    # 외부에서 지정하지 않으면 실행마다 개발용 임시 키를 생성합니다.
+    secret-base64: ${JWT_SECRET_BASE64:${random.value}${random.value}}
