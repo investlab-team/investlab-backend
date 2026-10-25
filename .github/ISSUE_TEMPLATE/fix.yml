@@ -5,7 +5,15 @@ labels: ["bug"]
 body:
   - type: markdown
     attributes:
-      value: "기본 틀을 실제 작업에 맞게 수정하세요. 담당자는 오른쪽 Assignees, 일정은 Project에서 관리합니다. 완료 기준은 결과를 확인한 뒤 직접 체크합니다."
+      value: "기본 틀을 실제 작업에 맞게 수정하세요. 담당자는 아래 입력란에 이름 / @아이디로 작성하고, 일정은 Project에서 관리합니다. 완료 기준은 결과를 확인한 뒤 직접 체크합니다."
+  - type: input
+    id: owner
+    attributes:
+      label: 담당자
+      description: 작업할 사람의 이름과 GitHub 아이디를 입력하세요. 이 입력은 GitHub Assignees를 자동 지정하지 않습니다.
+      placeholder: "예: 송상진 / @song-sang-jin"
+    validations:
+      required: true
   - type: textarea
     id: problem
     attributes:
@@ -34,8 +42,8 @@ body:
   - type: textarea
     id: references
     attributes:
-      label: 참고 사항 (선택)
-      description: 관련 API·이슈·다른 레포 작업, DB·환경 변수 변경이 있을 때만 작성하세요. 없으면 비워둡니다.
-      placeholder: "예: 관련 이슈 URL / 변경할 API / 추가할 환경 변수"
+      label: 추가 사항 (선택)
+      description: 관련 API·이슈·다른 레포 작업, DB·환경 변수 변경이 있을 때만 작성하세요. 추가할 내용이 없으면 없음을 그대로 두세요.
+      value: "없음"
     validations:
       required: false
