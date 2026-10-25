@@ -1,66 +1,50 @@
-name: "설정·문서·인프라 작업"
-description: "설정·문서·인프라 작업 이슈를 필수 항목으로 등록합니다."
+name: "설정·문서 작업"
+description: "할 일과 완료 조건을 간단히 기록합니다."
 title: "chore: "
 labels: ["documentation"]
 body:
   - type: markdown
     attributes:
-      value: "모든 작업은 이슈 등록 후 시작합니다. 아래 예시를 실제 작업에 맞게 수정하세요. PR은 dev 대상으로 생성하며, 회의에서 내용을 공유하고 필수 CI가 통과하면 작성자도 머지할 수 있습니다."
+      value: "기본 틀을 실제 작업에 맞게 수정하세요. 담당자는 아래 입력란에 이름 / @아이디로 작성하고, 일정은 Project에서 관리합니다. 완료 기준은 결과를 확인한 뒤 직접 체크합니다."
   - type: input
     id: owner
     attributes:
       label: 담당자
-      description: 실제 담당자의 실명과 GitHub 계정명을 작성하세요.
+      description: 작업할 사람의 이름과 GitHub 아이디를 입력하세요. 이 입력은 GitHub Assignees를 자동 지정하지 않습니다.
       placeholder: "예: 송상진 / @song-sang-jin"
     validations:
       required: true
   - type: textarea
-    id: purpose
+    id: work
     attributes:
-      label: 목적과 변경 내용
+      label: 작업 내용
       value: |
-        ## 목적
-        이 작업이 필요한 이유와 해결할 문제를 작성합니다.
-
-        ## 작업 내용
-        - [ ] 구현 또는 수정할 항목 1
-        - [ ] 구현 또는 수정할 항목 2
+        - [ ] 구현 또는 수정할 내용 1
+        - [ ] 구현 또는 수정할 내용 2
     validations:
       required: true
   - type: textarea
     id: acceptance
     attributes:
       label: 완료 기준
+      description: 무엇을 확인하면 작업 완료인지 적어주세요. 검증 방법은 테스트 코드 또는 직접 확인 등 작업에 맞게 선택합니다.
       value: |
-        - [ ] 의도한 동작을 확인한다.
-        - [ ] 정상 상황과 오류 상황을 검증한다.
-        - [ ] 필요한 명세와 문서를 갱신한다.
-        - [ ] 관련 CI 검사를 통과한다.
+        - [ ] 확인할 동작 또는 결과 1
+        - [ ] 확인할 동작 또는 결과 2
     validations:
       required: true
   - type: textarea
-    id: dependencies
+    id: references
     attributes:
-      label: 관련 레포·API·이슈
-      description: 다른 레포 이슈는 전체 URL로 연결합니다. 영향이 없으면 해당 없음을 유지하세요.
-      value: |
-        관련 레포: 해당 없음
-        관련 API: 해당 없음
-        관련 이슈: 해당 없음
+      label: 추가 사항 (선택)
+      description: |
+        필요한 내용만 골라 적으세요. 모두 작성할 필요는 없고, 없으면 기본값 '없음'을 유지하세요.
+        - 관련 API 예: POST /api/v1/example (실제 명세의 경로로 작성)
+        - 관련 이슈 예: 선행 작업 #이슈번호 또는 이슈 URL
+        - 다른 레포 영향 예: AI 응답 형식 변경으로 백엔드도 수정 필요 (자신의 레포명은 반복하지 않음)
+        - 배포 영향 예: DB 변경 적용 후 백엔드 배포 필요
+        - 환경 변수 예: SOME_API_KEY 추가 필요 (이름만 작성, 실제 비밀값 금지)
+        - DB 변경 예: 회원 테이블에 신규 컬럼 추가 및 마이그레이션 필요
+      value: "없음"
     validations:
-      required: true
-  - type: textarea
-    id: verification
-    attributes:
-      label: 검증 계획·배포 영향
-      value: |
-        ## 검증 계획
-        - [ ] 정상 상황: 입력과 예상 결과 작성
-        - [ ] 오류 상황: 입력과 예상 결과 작성
-
-        ## 배포 영향
-        환경 변수 변경: 없음
-        DB 변경·마이그레이션: 없음
-        배포 순서·주의 사항: 없음
-    validations:
-      required: true
+      required: false
