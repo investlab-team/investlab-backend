@@ -12,7 +12,7 @@ application.yml은 공통 설정과 기본 프로필 local을 지정합니다. a
 
 DB 기능 개발 시 `application-postgres.yml`을 사용하는 `postgres` 프로필을 선택합니다. `.env.example`을 참고해 DB·JWT 환경 변수를 IDE 또는 셸에 설정하고 PostgreSQL 16을 준비합니다(자동 .env 로딩 없음). `./gradlew bootRun --args='--spring.profiles.active=postgres'` 또는 IDE 실행 인자 `--spring.profiles.active=postgres`로 실행합니다. Gradle 설정 파일이나 `.vscode`를 수정할 필요는 없습니다. Docker Compose의 backend 서비스는 이 프로필을 명시적으로 사용합니다.
 
-`./gradlew check bootJar`로 검사·빌드합니다. 기존 H2 테스트 설정은 PostgreSQL 잠금·거래 정합성 검증을 대체하지 않습니다. DB 없는 기본 실행의 보안 테스트가 실제 DB 연결을 검증하는 것은 아닙니다.
+`./gradlew check bootJar`로 검사·빌드합니다. 현재 health·인증 테스트는 `local` 프로필과 고정된 테스트용 JWT 키를 사용해 DB 없이 실행합니다. H2는 사용하지 않습니다. DB 기능을 구현할 때는 별도의 PostgreSQL 16 통합 테스트에서 연결·마이그레이션·저장·조회·트랜잭션을 검증해야 합니다. `postgres` 프로필 선택만으로 이러한 동작이 자동 검증되는 것은 아닙니다.
 
 ## 책임
 

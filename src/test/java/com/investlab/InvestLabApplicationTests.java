@@ -5,10 +5,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.webmvc.test.autoconfigure.AutoConfigureMockMvc;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.context.ActiveProfiles;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-@SpringBootTest
+@SpringBootTest(properties = "investlab.jwt.secret-base64=dGVzdC1vbmx5LWtleS1ub3QtZm9yLXByb2R1Y3Rpb24=")
+@ActiveProfiles("local")
 @AutoConfigureMockMvc
 class InvestLabApplicationTests {
     @Autowired MockMvc mvc;
