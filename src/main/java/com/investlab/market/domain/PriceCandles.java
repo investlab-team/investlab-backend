@@ -54,7 +54,7 @@ public class PriceCandles extends BaseTimeEntity {
     private Instant fetchedAt;
 
     @Builder
-    public PriceCandle(Instruments instrument, CandleInterval interval, Instant openedAt,
+    public PriceCandles(Instruments instrument, CandleInterval interval, Instant openedAt,
                        BigDecimal open, BigDecimal high, BigDecimal low, BigDecimal close,
                        BigDecimal volume, String provider, Instant fetchedAt) {
         this.instrument = instrument;
