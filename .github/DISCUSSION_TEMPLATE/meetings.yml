@@ -1,13 +1,14 @@
-title: "[회의록] YYYY-MM-DD — 회의 주제"
+title: "[주간회의] YYYY-MM-DD"
 body:
   - type: markdown
     attributes:
-      value: "예시를 실제 회의 내용으로 바꿔 작성하세요. 회의록은 이슈 연결 없이 등록할 수 있습니다."
+      value: "이번 주에 한 일, 막힌 부분과 해결 방향, 다음 주 계획을 공유하는 주간회의 기록입니다. 아래 틀을 실제 내용으로 바꾸고, 해당 사항이 없으면 '없음'으로 적어주세요. 회의 전에 각자 진행 내용과 고민을 적고, 회의 후 결정 사항과 다음 주 계획을 정리하면 됩니다."
   - type: input
     id: date
     attributes:
       label: 회의 일시
-      placeholder: "YYYY-MM-DD HH:mm (KST)"
+      placeholder: "예: 2026-10-25 16:00"
+      description: 날짜와 시간만 작성하세요. 초 단위는 필요하지 않습니다.
     validations:
       required: true
   - type: textarea
@@ -22,50 +23,77 @@ body:
     validations:
       required: true
   - type: textarea
-    id: agenda
+    id: weekly-progress
     attributes:
-      label: 안건
+      label: 이번 주 진행 내용
+      description: 각자 완료한 일과 진행 중인 일을 적으세요. 관련 이슈·PR 링크는 필요한 경우에만 붙입니다.
       value: |
-        - 이번 회의에서 이야기할 주제 1
-        - 이번 회의에서 이야기할 주제 2
+        ## 송상진 (백엔드)
+        - 완료한 일:
+        - 진행 중인 일:
+
+        ## 박진호 (백엔드)
+        - 완료한 일:
+        - 진행 중인 일:
+
+        ## 유광민 (AI)
+        - 완료한 일:
+        - 진행 중인 일:
     validations:
       required: true
   - type: textarea
-    id: discussion
+    id: blockers
     attributes:
-      label: 논의 내용
+      label: 문제·막힌 부분과 해결 제안
+      description: 오류뿐 아니라 설계 고민, 일정 지연, 다른 담당자의 도움이 필요한 부분도 적습니다. 없으면 '없음'으로 바꾸세요.
       value: |
-        ## 안건 1
-        - 현재 상황:
-        - 나온 의견:
+        ## 송상진
+        - 문제 또는 막힌 부분:
+        - 시도한 방법·확인한 내용:
+        - 해결하고 싶은 방향·도움 요청:
 
-        ## 안건 2
-        - 현재 상황:
-        - 나온 의견:
+        ## 박진호
+        - 문제 또는 막힌 부분:
+        - 시도한 방법·확인한 내용:
+        - 해결하고 싶은 방향·도움 요청:
+
+        ## 유광민
+        - 문제 또는 막힌 부분:
+        - 시도한 방법·확인한 내용:
+        - 해결하고 싶은 방향·도움 요청:
     validations:
       required: true
   - type: textarea
     id: decisions
     attributes:
-      label: 결정 사항
+      label: 회의에서 정한 해결 방향·결정 사항
+      description: 회의 후 합의한 내용을 적으세요. 해결 제안과 실제 결정은 구분하고, 결론을 내리지 못한 내용은 보류로 남깁니다.
       value: |
         - 결정한 내용:
-        - 결정 이유:
+        - 담당자·추가 확인할 내용:
         - 보류한 내용: 없음
     validations:
       required: true
   - type: textarea
-    id: actions
+    id: next-week
     attributes:
-      label: 후속 작업 (선택)
-      description: 할 일이 없으면 비워두거나 해당 없음으로 바꿔주세요.
+      label: 다음 주 계획
+      description: 각자 다음 주 할 일과 목표일을 적습니다. 개발 작업은 이슈·Project에도 반영하고, 같은 일을 후속 작업 항목에 다시 적을 필요는 없습니다.
       value: |
-        - [ ] 담당자 / 할 일 / 목표일
+        ## 송상진 (백엔드)
+        - [ ] 할 일 / 목표일:
+
+        ## 박진호 (백엔드)
+        - [ ] 할 일 / 목표일:
+
+        ## 유광민 (AI)
+        - [ ] 할 일 / 목표일:
+    validations:
+      required: true
   - type: textarea
-    id: next-meeting
+    id: references
     attributes:
       label: 다음 회의·참고 자료 (선택)
       value: |
         다음 회의: 미정
         참고 링크: 없음
-        관련 이슈: 없음 (필수 아님)
