@@ -1,0 +1,58 @@
+title: "[기술 논의] 논의할 주제"
+body:
+  - type: markdown
+    attributes:
+      value: "한 글에는 한 주제를 다룹니다. 예시를 실제 내용으로 바꾸고 댓글로 의견을 나누세요. 이슈 연결은 선택 사항입니다."
+  - type: textarea
+    id: background
+    attributes:
+      label: 배경·문제
+      value: |
+        - 현재 상황:
+        - 해결하거나 결정해야 할 문제:
+    validations:
+      required: true
+  - type: textarea
+    id: options
+    attributes:
+      label: 선택지·비교
+      value: |
+        ## 선택지 1
+        - 방식:
+        - 장점:
+        - 단점·고려 사항:
+
+        ## 선택지 2
+        - 방식:
+        - 장점:
+        - 단점·고려 사항:
+    validations:
+      required: true
+  - type: textarea
+    id: opinion
+    attributes:
+      label: 제안·의견
+      value: |
+        - 제안하는 방향:
+        - 제안 이유:
+        - 팀원에게 확인하고 싶은 점:
+    validations:
+      required: true
+  - type: textarea
+    id: references
+    attributes:
+      label: 참고 자료·관련 작업 (선택)
+      value: |
+        참고 자료: 없음
+        관련 레포·API: 없음
+        관련 이슈·PR: 없음 (필수 아님)
+  - type: textarea
+    id: conclusion
+    attributes:
+      label: 최종 결론 (논의 후 수정)
+      description: 처음에는 논의 중으로 두고 합의 후 본문을 수정하세요.
+      value: |
+        상태: 논의 중
+        결정 사항: 미정
+        결정 이유: 미정
+        후속 작업: 미정
