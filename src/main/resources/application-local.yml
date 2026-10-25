@@ -1,0 +1,12 @@
+# 별도 프로필 지정 없이 Run하면 선택되는 DB 없는 개발 실행 설정입니다.
+spring:
+  autoconfigure:
+    exclude:
+      - org.springframework.boot.jdbc.autoconfigure.DataSourceAutoConfiguration
+      - org.springframework.boot.hibernate.autoconfigure.HibernateJpaAutoConfiguration
+      - org.springframework.boot.data.jpa.autoconfigure.DataJpaRepositoriesAutoConfiguration
+      - org.springframework.boot.flyway.autoconfigure.FlywayAutoConfiguration
+investlab:
+  jwt:
+    # 외부에서 지정하지 않으면 실행마다 개발용 임시 키를 생성합니다.
+    secret-base64: ${JWT_SECRET_BASE64:${random.value}${random.value}}

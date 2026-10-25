@@ -8,7 +8,11 @@ Java 21 LTS(Eclipse Temurin), Spring Boot 4.1.1, Gradle Wrapper 9.7.1. PostgreSQ
 
 ## 실행·검사
 
-`.env.example`을 참고해 환경변수를 IDE 또는 셸에 설정합니다(자동 .env 로딩 없음). PostgreSQL 준비 후 `./gradlew bootRun`을 실행합니다. `./gradlew check bootJar`로 검사·빌드합니다. 테스트 H2는 빠른 보안 뼈대 검사용이며 PostgreSQL 잠금·거래 정합성 검증을 대체하지 않습니다.
+application.yml은 공통 설정과 기본 프로필 local을 지정합니다. application-local.yml은 DB 없는 개발 실행, application-postgres.yml은 PostgreSQL 연결 설정입니다. 기본 실행은 DB 연결 없이 서버만 시작합니다. IDE에서 `InvestLabApplication.main()`을 Run하거나 `./gradlew bootRun`을 실행하면 됩니다. Docker·DB 환경 변수·IDE 전용 설정은 필요하지 않습니다. `http://localhost:8080/actuator/health`의 `UP` 응답으로 확인합니다. JWT 인증 보호는 유지하며 개발용 키는 환경 변수 미설정 시 실행마다 임시 생성합니다. DB·JPA·Flyway는 기본 실행에서 비활성화되므로 DB 저장 기능은 사용할 수 없습니다.
+
+DB 기능 개발 시 `application-postgres.yml`을 사용하는 `postgres` 프로필을 선택합니다. `.env.example`을 참고해 DB·JWT 환경 변수를 IDE 또는 셸에 설정하고 PostgreSQL 16을 준비합니다(자동 .env 로딩 없음). `./gradlew bootRun --args='--spring.profiles.active=postgres'` 또는 IDE 실행 인자 `--spring.profiles.active=postgres`로 실행합니다. Gradle 설정 파일이나 `.vscode`를 수정할 필요는 없습니다. Docker Compose의 backend 서비스는 이 프로필을 명시적으로 사용합니다.
+
+`./gradlew check bootJar`로 검사·빌드합니다. 기존 H2 테스트 설정은 PostgreSQL 잠금·거래 정합성 검증을 대체하지 않습니다. DB 없는 기본 실행의 보안 테스트가 실제 DB 연결을 검증하는 것은 아닙니다.
 
 ## 책임
 
