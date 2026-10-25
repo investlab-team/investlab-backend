@@ -8,11 +8,31 @@ Java 21 LTS(Eclipse Temurin), Spring Boot 4.1.1, Gradle Wrapper 9.7.1. PostgreSQ
 
 ## 실행·검사
 
-application.yml은 공통 설정과 기본 프로필 local을 지정합니다. application-local.yml은 DB 없는 개발 실행, application-postgres.yml은 PostgreSQL 연결 설정입니다. 기본 실행은 DB 연결 없이 서버만 시작합니다. IDE에서 `InvestLabApplication.main()`을 Run하거나 `./gradlew bootRun`을 실행하면 됩니다. Docker·DB 환경 변수·IDE 전용 설정은 필요하지 않습니다. `http://localhost:8080/actuator/health`의 `UP` 응답으로 확인합니다. JWT 인증 보호는 유지하며 개발용 키는 환경 변수 미설정 시 실행마다 임시 생성합니다. DB·JPA·Flyway는 기본 실행에서 비활성화되므로 DB 저장 기능은 사용할 수 없습니다.
+`application.yml`은 공통 설정과 기본 프로필 `local`을 지정합니다. 기본 Run 또는 `./gradlew bootRun`은 `application-local.yml`의 메모리 H2 DB와 서버를 함께 시작합니다. Docker나 별도 DB 서버, DB 환경 변수는 필요하지 않습니다. `http://localhost:8080/actuator/health`의 `UP` 응답으로 확인합니다. 기존 JWT 검증 설정의 개발용 키는 외부에서 지정하지 않으면 실행마다 임시 생성합니다.
 
-DB 기능 개발 시 `application-postgres.yml`을 사용하는 `postgres` 프로필을 선택합니다. `.env.example`을 참고해 DB·JWT 환경 변수를 IDE 또는 셸에 설정하고 PostgreSQL 16을 준비합니다(자동 .env 로딩 없음). `./gradlew bootRun --args='--spring.profiles.active=postgres'` 또는 IDE 실행 인자 `--spring.profiles.active=postgres`로 실행합니다. Gradle 설정 파일이나 `.vscode`를 수정할 필요는 없습니다. Docker Compose의 backend 서비스는 이 프로필을 명시적으로 사용합니다.
+### local: 메모리 H2로 빠른 개발
 
-`./gradlew check bootJar`로 검사·빌드합니다. 현재 health·인증 테스트는 `local` 프로필과 고정된 테스트용 JWT 키를 사용해 DB 없이 실행합니다. H2는 사용하지 않습니다. DB 기능을 구현할 때는 별도의 PostgreSQL 16 통합 테스트에서 연결·마이그레이션·저장·조회·트랜잭션을 검증해야 합니다. `postgres` 프로필 선택만으로 이러한 동작이 자동 검증되는 것은 아닙니다.
+- JDBC URL: `jdbc:h2:mem:investlab;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DB_CLOSE_DELAY=-1`
+- 사용자 `sa`, 비밀번호 없음. 애플리케이션 내부의 임시 DB이며 H2 웹 콘솔은 활성화하지 않습니다.
+- JPA `ddl-auto: create-drop`으로 엔티티에 맞춰 테이블을 생성하고 종료 시 제거합니다. 아직 엔티티가 없으면 업무 테이블도 생성되지 않습니다. 앱 프로세스를 다시 실행하면 데이터는 초기화됩니다.
+- Flyway는 비활성화합니다. 따라서 PostgreSQL 마이그레이션을 검증하는 환경은 아닙니다.
+- H2의 PostgreSQL 호환 모드는 실제 PostgreSQL과 동일하지 않습니다. 기본 CRUD를 빠르게 확인하고, PostgreSQL 전용 SQL·자료형·잠금·동시성은 개발 중에도 PostgreSQL에서 검증합니다.
+
+### postgres: PostgreSQL 16에서 확인
+
+`application-postgres.yml`을 사용하는 `postgres` 프로필을 선택합니다. `.env.example`을 참고해 DB·JWT 환경 변수를 IDE 또는 셸에 설정하고 개발·테스트용 PostgreSQL 16을 준비합니다(자동 .env 로딩 없음).
+
+```bash
+./gradlew bootRun --args='--spring.profiles.active=postgres'
+```
+
+IDE 실행 인자로 `--spring.profiles.active=postgres`를 지정해도 됩니다. Compose의 backend 서비스도 이 프로필을 명시적으로 사용합니다. PostgreSQL에서는 Flyway와 JPA `validate`를 사용하며, H2의 `create-drop` 설정은 적용되지 않습니다.
+
+### 테스트와 PR 전 검증
+
+`./gradlew check bootJar`로 검사·빌드합니다. 현재 health·인증 테스트는 `local` 프로필의 H2와 고정된 테스트용 JWT 키를 사용합니다. 테스트 실행만으로 업무 데이터 저장·조회가 검증되는 것은 아닙니다. DB 기능을 구현하면 PR 전 PostgreSQL 16 통합 테스트로 연결·마이그레이션·저장·조회·트랜잭션을 확인합니다. 테스트 데이터는 운영 DB가 아닌 별도 개발·테스트 DB에서 관리합니다.
+
+참고: [Spring Boot DB 초기화](https://docs.spring.io/spring-boot/how-to/data-initialization.html), [H2 메모리 DB와 호환 모드](https://h2database.github.io/html/features.html).
 
 ## 책임
 
