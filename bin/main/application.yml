@@ -1,0 +1,25 @@
+spring:
+  application:
+    name: investlab-backend
+  profiles:
+    default: local
+  web:
+    error:
+      include-message: never
+      include-stacktrace: never
+server:
+  port: 8080
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health
+  endpoint:
+    health:
+      show-details: never
+investlab:
+  jwt:
+    issuer: ${JWT_ISSUER:investlab}
+    audience: ${JWT_AUDIENCE:investlab-api}
+  ai:
+    base-url: ${AI_BASE_URL:http://localhost:8000}
