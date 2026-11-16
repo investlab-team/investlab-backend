@@ -1,7 +1,7 @@
 # 기본 개발 실행: 별도 DB 서버 없이 메모리 H2를 사용합니다.
 spring:
   datasource:
-    url: jdbc:h2:mem:investlab;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DB_CLOSE_DELAY=-1
+    url: jdbc:h2:mem:investlab;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DB_CLOSE_DELAY=-1;NON_KEYWORDS=INTERVAL;INIT=CREATE DOMAIN IF NOT EXISTS market_code AS VARCHAR(20)\;CREATE DOMAIN IF NOT EXISTS instrument_status AS VARCHAR(20)\;CREATE DOMAIN IF NOT EXISTS candle_interval AS VARCHAR(20)\;CREATE DOMAIN IF NOT EXISTS jsonb AS JSON
     username: sa
     password: ""
     driver-class-name: org.h2.Driver
