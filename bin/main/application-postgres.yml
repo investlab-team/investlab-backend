@@ -1,0 +1,15 @@
+# DB 기능 개발 시 postgres 프로필을 명시적으로 선택합니다.
+spring:
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/investlab_core}
+    username: ${DB_USERNAME}
+    password: ${DB_PASSWORD}
+  jpa:
+    open-in-view: false
+    hibernate:
+      ddl-auto: validate
+  flyway:
+    enabled: true
+investlab:
+  jwt:
+    secret-base64: ${JWT_SECRET_BASE64}
