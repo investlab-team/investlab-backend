@@ -56,4 +56,4 @@ postgres는 Flyway `V1__create_users.sql`이 실제 CITEXT 확장과 users를 �
 
 `./gradlew check bootJar`로 전체 검사·빌드한다. UserRepositoryTests는 회원 영역만 대상으로 H2의 저장·재조회, UUIDv7·초기값·시간값, 대소문자 무시 조회, 이메일·닉네임 중복 거부, 구글 회원의 NULL 허용, ACTIVE/닉네임 제약, 빈 필드 입력을 검증한다. 테스트는 트랜잭션을 롤백하므로 테스트 데이터를 직접 지울 필요가 없다.
 
-기존 시장 모델은 H2에서 PostgreSQL 전용 타입·interval 예약어 관련 DDL 경고가 있다. 이번 회원 테스트는 그 테이블 생성 성공을 주장하지 않으며 시장 모델은 변경하지 않는다. PostgreSQL 16 실제 마이그레이션·CITEXT 동작 검증은 Docker 데몬이 꺼져 있어 미실행이다.
+최신 dev의 시장·거래 H2 도메인 설정과 함께 전체 테스트 10개 및 clean check bootJar가 통과했다. 회원 Repository 테스트는 회원 영역을 독립된 H2 DB에서 검증한다. 일회용 PostgreSQL 16에서 V1 SQL 적용, CITEXT 대소문자 무시 조회·이메일/닉네임 유니크 제약·ACTIVE 닉네임 필수·NULL 닉네임 복수 허용을 확인하고 컨테이너를 종료했다. 이 검증은 SQL 직접 적용이며 PostgreSQL에서 전체 앱의 Flyway 실행·Hibernate validate·Repository 연동까지 검증한 것은 아니다.
