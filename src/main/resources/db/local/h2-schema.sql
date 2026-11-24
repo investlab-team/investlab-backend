@@ -1,0 +1,4 @@
+-- H2 로컬 전용: PostgreSQL의 CITEXT를 대소문자 무시 문자열로 대체합니다.
+SET MODE REGULAR;
+CREATE DOMAIN IF NOT EXISTS citext AS VARCHAR_IGNORECASE;
+SET MODE PostgreSQL;
