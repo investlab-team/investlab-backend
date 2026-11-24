@@ -2,6 +2,10 @@
 
 Java 21 LTS(Eclipse Temurin), Spring Boot 4.1.1, Gradle Wrapper 9.7.1. PostgreSQL 16, Spring Security JWT 인증 검증 뼈대입니다.
 
+## 명세 문서
+
+[명세 안내](docs/requirements/README.md)에서 기능·API·DB 설계의 Markdown 기준 문서와 버전 차이를 확인합니다. 기존 PDF는 과거 원본으로 보관합니다.
+
 ## 상태
 
 회원가입·로그인 토큰 발급·리프레시·거래 API는 후속 이슈에서 구현합니다. 현재 공개 endpoint는 `/actuator/health`이며 다른 경로는 유효 JWT를 요구합니다. JWT HS256·issuer·audience·만료를 검사합니다. 서명키는 32바이트 이상이며 환경변수로만 전달합니다.
