@@ -1,5 +1,9 @@
 # 기본 개발 실행: 별도 DB 서버 없이 메모리 H2를 사용합니다.
 spring:
+  sql:
+    init:
+      mode: embedded
+      schema-locations: classpath:db/local/h2-schema.sql
   datasource:
     url: jdbc:h2:mem:investlab;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;DB_CLOSE_DELAY=-1;NON_KEYWORDS=INTERVAL;INIT=CREATE DOMAIN IF NOT EXISTS market_code AS VARCHAR(20)\;CREATE DOMAIN IF NOT EXISTS instrument_status AS VARCHAR(20)\;CREATE DOMAIN IF NOT EXISTS candle_interval AS VARCHAR(20)\;CREATE DOMAIN IF NOT EXISTS account_status AS VARCHAR(20)\;CREATE DOMAIN IF NOT EXISTS period_start_reason AS VARCHAR(20)\;CREATE DOMAIN IF NOT EXISTS order_side AS VARCHAR(20)\;CREATE DOMAIN IF NOT EXISTS order_type AS VARCHAR(20)\;CREATE DOMAIN IF NOT EXISTS order_source AS VARCHAR(20)\;CREATE DOMAIN IF NOT EXISTS hoga_level AS VARCHAR(20)\;CREATE DOMAIN IF NOT EXISTS order_status AS VARCHAR(20)\;CREATE DOMAIN IF NOT EXISTS price_basis AS VARCHAR(20)\;CREATE DOMAIN IF NOT EXISTS cash_event_kind AS VARCHAR(20)\;CREATE DOMAIN IF NOT EXISTS jsonb AS JSON
     username: sa
